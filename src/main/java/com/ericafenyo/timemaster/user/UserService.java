@@ -22,18 +22,11 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.timemaster;
+package com.ericafenyo.timemaster.user;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import com.ericafenyo.timemaster.user.model.User;
+import com.ericafenyo.timemaster.user.requests.CreateUserRequest;
 
-@SpringBootApplication
-@EnableJpaAuditing
-public class Application {
-
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
-
+public interface UserService {
+    User create(CreateUserRequest request);
 }

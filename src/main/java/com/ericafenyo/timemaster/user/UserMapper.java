@@ -22,18 +22,31 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.timemaster;
+package com.ericafenyo.timemaster.user;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import com.ericafenyo.timemaster.Mapper;
+import com.ericafenyo.timemaster.user.model.User;
+import org.springframework.stereotype.Component;
 
-@SpringBootApplication
-@EnableJpaAuditing
-public class Application {
+@Component
+public class UserMapper implements Mapper<UserEntity, User> {
+    @Override
+    public User toModel(UserEntity entity) {
+        User user = new User();
+        user.setFirstName(entity.firstName());
+        user.setLastName(entity.lastName());
+        user.setEmail(entity.email());
+        user.setPicture(entity.picture());
+        user.setConfirmed(entity.isConfirmed());
+        user.setId(entity.uuid());
+        user.setCreatedAt(entity.createdAt());
+        user.setUpdatedAt(entity.updatedAt());
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+        return user;
+    }
 
+    @Override
+    public UserEntity toEntity(User user) {
+        return null;
+    }
 }

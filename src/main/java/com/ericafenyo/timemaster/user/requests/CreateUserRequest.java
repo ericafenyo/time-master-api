@@ -22,18 +22,43 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.timemaster;
+package com.ericafenyo.timemaster.user.requests;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+public class CreateUserRequest {
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
 
-@SpringBootApplication
-@EnableJpaAuditing
-public class Application {
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

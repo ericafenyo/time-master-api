@@ -22,18 +22,25 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.timemaster;
+package com.ericafenyo.timemaster.user;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import com.ericafenyo.timemaster.user.model.User;
+import com.ericafenyo.timemaster.user.requests.CreateUserRequest;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication
-@EnableJpaAuditing
-public class Application {
+@RestController
+public class UserController {
+    private final UserService userService;
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
+    @PostMapping("/users")
+    public User createUser(@RequestBody CreateUserRequest request) {
+        return userService.create(request);
+    }
 }

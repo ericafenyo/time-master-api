@@ -24,16 +24,8 @@
 
 package com.ericafenyo.timemaster;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+public interface Mapper<Entity, Model> {
+    Model toModel(Entity entity);
 
-@SpringBootApplication
-@EnableJpaAuditing
-public class Application {
-
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
-
+    Entity toEntity(Model model);
 }
