@@ -22,14 +22,8 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.timemaster.activity.persistence;
+package com.ericafenyo.timemaster;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Component;
-
-@Component
-public interface ActivityRepository extends JpaRepository<ActivityEntity, Long> {
-    @Query("SELECT a FROM activities as a WHERE a.uuid=:id")
-    ActivityEntity findById(String id);
+public enum Status {
+    IDLE, STARTED, PAUSED, FINISHED
 }

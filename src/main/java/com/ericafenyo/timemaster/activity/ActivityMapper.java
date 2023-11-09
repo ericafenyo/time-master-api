@@ -25,25 +25,17 @@
 package com.ericafenyo.timemaster.activity;
 
 import com.ericafenyo.timemaster.activity.persistence.ActivityEntity;
-import org.springframework.stereotype.Component;
+import com.ericafenyo.timemaster.activity.requests.UpdateActivityRequest;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import java.util.function.Function;
+@Mapper
+public interface ActivityMapper {
+    Activity toModel(ActivityEntity entity);
 
-@Component
-public class ActivityMapper implements Function<ActivityEntity, Activity> {
-  @Override
-  public Activity apply(ActivityEntity entity) {
-    Activity activity = new Activity();
-    activity.setId(entity.uuid());
-    activity.setName(entity.name());
-    activity.setDescription(entity.description());
-    activity.setEstimation(entity.estimation());
-    activity.setStartTime(entity.startTime());
-    activity.setEndTime(entity.endTime());
-    activity.setProjectId(entity.project().uuid());
-    activity.setCreatedAt(entity.createdAt());
-    activity.setUpdatedAt(entity.updatedAt());
-
-    return activity;
-  }
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void merge(UpdateActivityRequest source, @MappingTarget ActivityEntity target);
 }

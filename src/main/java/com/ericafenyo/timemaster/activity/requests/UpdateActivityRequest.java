@@ -22,24 +22,17 @@
  * SOFTWARE.
  */
 
-package com.ericafenyo.timemaster.activity;
+package com.ericafenyo.timemaster.activity.requests;
 
-import com.ericafenyo.timemaster.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
 /**
  * Activity is a core element used to track time for different tasks.
  */
-public class Activity {
+public class UpdateActivityRequest {
     /**
-     * Unique identifier for the activity
-     */
-    private String id;
-
-    /**
-     * Name of the activity (e.g.Cycling)
+     * Name of the activity (e.g., Task, Project)
      */
     private String name;
 
@@ -49,11 +42,9 @@ public class Activity {
     private String description;
 
     /**
-     * Estimation of the activity duration in seconds
+     * Original time estimation of the activity in seconds
      */
-    private Long estimation;
-
-    private Status status;
+    private Long estimation = 0L;
 
     /**
      * Start time when the activity is initiated
@@ -65,31 +56,6 @@ public class Activity {
      */
     private LocalDateTime endTime;
 
-    /**
-     * Identifier of the project this activity belongs to
-     */
-    private String projectId;
-
-    /**
-     * Time when the activity was created
-     */
-    private LocalDateTime createdAt;
-
-    /**
-     * Time when the activity was last updated
-     */
-    private LocalDateTime updatedAt;
-
-    @JsonProperty("id")
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -98,7 +64,6 @@ public class Activity {
         this.name = name;
     }
 
-    @JsonProperty("description")
     public String getDescription() {
         return description;
     }
@@ -107,8 +72,6 @@ public class Activity {
         this.description = description;
     }
 
-
-    @JsonProperty("estimation")
     public Long getEstimation() {
         return estimation;
     }
@@ -117,7 +80,6 @@ public class Activity {
         this.estimation = estimation;
     }
 
-    @JsonProperty("startTime")
     public LocalDateTime getStartTime() {
         return startTime;
     }
@@ -126,48 +88,11 @@ public class Activity {
         this.startTime = startTime;
     }
 
-    @JsonProperty("endTime")
     public LocalDateTime getEndTime() {
         return endTime;
     }
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
-    }
-
-    @JsonProperty("projectId")
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
-    }
-
-    @JsonProperty("createdAt")
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @JsonProperty("updatedAt")
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    @JsonProperty("status")
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 }

@@ -24,10 +24,21 @@
 
 package com.ericafenyo.timemaster.activity.persistence;
 
+import com.ericafenyo.timemaster.Status;
 import com.ericafenyo.timemaster.project.Project;
 import com.ericafenyo.timemaster.project.persistence.ProjectEntity;
 import com.ericafenyo.timemaster.tag.persistence.TagEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -41,151 +52,163 @@ import java.util.Set;
 @Entity(name = "activities")
 @EntityListeners(AuditingEntityListener.class)
 public class ActivityEntity {
-  /**
-   * Unique identifier for the activity
-   */
-  @Id
-  @GeneratedValue
-  @Column(name = "id")
-  private Long id;
+    /**
+     * Unique identifier for the activity
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
 
-  /**
-   * UUID for the activity
-   */
-  @Column(name = "uuid", nullable = false, unique = true)
-  private String uuid;
+    /**
+     * UUID for the activity
+     */
+    @Column(name = "uuid", nullable = false, unique = true)
+    private String uuid;
 
-  /**
-   * Name of the activity (e.g., Cycling)
-   */
-  @Column(name = "name", nullable = false)
-  private String name;
+    /**
+     * Name of the activity (e.g., Cycling)
+     */
+    @Column(name = "name", nullable = false)
+    private String name;
 
-  /**
-   * Description or details about the activity
-   */
-  @Column(name = "description", nullable = false)
-  private String description = "";
+    /**
+     * Description or details about the activity
+     */
+    @Column(name = "description", nullable = false)
+    private String description = "";
 
-  @Column(name = "estimation", nullable = false)
-  /**
-   * Original time estimation of the activity in seconds
-   */
-  private Long estimation = 0L;
+    @Column(name = "estimation", nullable = false)
+    /**
+     * Original time estimation of the activity in seconds
+     */
+    private Long estimation = 0L;
 
-  /**
-   * Start time when the activity is initiated
-   */
-  @Column(name = "start_time", nullable = false)
-  private LocalDateTime startTime;
+    /**
+     * Start time when the activity is initiated
+     */
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
 
-  /**
-   * End time when the activity is stopped or completed
-   */
-  @Column(name = "end_time", nullable = false)
-  private LocalDateTime endTime;
+    /**
+     * End time when the activity is stopped or completed
+     */
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
 
-  /**
-   * Identifier of the project this activity belongs to
-   */
-  @ManyToOne()
-  @JoinColumn(name = "project_id", nullable = false)
-  private ProjectEntity project;
+    /**
+     * Identifier of the project this activity belongs to
+     */
+    @ManyToOne()
+    @JoinColumn(name = "project_id")
+    private ProjectEntity project;
 
-  @ManyToMany
-  private Set<TagEntity> tags;
+    @ManyToMany
+    private Set<TagEntity> tags;
 
-  /**
-   * Time when the activity was created
-   */
-  @Column(name = "created_at", nullable = false)
-  @CreatedDate
-  private LocalDateTime createdAt;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.IDLE;
 
-  /**
-   * Time when the activity was last updated
-   */
-  @Column(name = "updated_at", nullable = false)
-  @LastModifiedDate
-  private LocalDateTime updatedAt;
+    /**
+     * Time when the activity was created
+     */
+    @Column(name = "created_at", nullable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-  public Long id() {
-    return id;
-  }
+    /**
+     * Time when the activity was last updated
+     */
+    @Column(name = "updated_at", nullable = false)
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public long getId() {
+        return id;
+    }
 
-  public String uuid() {
-    return uuid;
-  }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-  public void setUUID(String uuid) {
-    this.uuid = uuid;
-  }
+    public String getUuid() {
+        return uuid;
+    }
 
-  public String name() {
-    return name;
-  }
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public String description() {
-    return description;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public Long estimation() {
-    return estimation;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  public void setEstimation(Long estimation) {
-    this.estimation = estimation;
-  }
+    public Long getEstimation() {
+        return estimation;
+    }
 
-  public LocalDateTime startTime() {
-    return startTime;
-  }
+    public void setEstimation(Long estimation) {
+        this.estimation = estimation;
+    }
 
-  public void setStartTime(LocalDateTime startTime) {
-    this.startTime = startTime;
-  }
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
 
-  public LocalDateTime endTime() {
-    return endTime;
-  }
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
 
-  public void setEndTime(LocalDateTime endTime) {
-    this.endTime = endTime;
-  }
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
 
-  public ProjectEntity project() {
-    return project;
-  }
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 
-  public void setProject(ProjectEntity project) {
-    this.project = project;
-  }
+    public ProjectEntity getProject() {
+        return project;
+    }
 
-  public LocalDateTime createdAt() {
-    return createdAt;
-  }
+    public void setProject(ProjectEntity project) {
+        this.project = project;
+    }
 
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-  public LocalDateTime updatedAt() {
-    return updatedAt;
-  }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-  }
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

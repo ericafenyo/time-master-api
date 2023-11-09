@@ -25,55 +25,69 @@
 package com.ericafenyo.timemaster.activity.internal;
 
 import com.ericafenyo.timemaster.activity.Activity;
+import com.ericafenyo.timemaster.activity.ActivityMapper;
 import com.ericafenyo.timemaster.activity.ActivityService;
 import com.ericafenyo.timemaster.activity.persistence.ActivityEntity;
 import com.ericafenyo.timemaster.activity.persistence.ActivityRepository;
 import com.ericafenyo.timemaster.activity.requests.CreateActivityRequest;
-import com.ericafenyo.timemaster.project.persistence.ProjectEntity;
+import com.ericafenyo.timemaster.activity.requests.UpdateActivityRequest;
 import com.ericafenyo.timemaster.project.persistence.ProjectRepository;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
-  private final ActivityRepository activityRepository;
-  private final ProjectRepository projectRepository;
-  private final Function<ActivityEntity, Activity> mapper;
+    private final ActivityRepository activityRepository;
+    private final ProjectRepository projectRepository;
+    private final ActivityMapper mapper;
 
-  public ActivityServiceImpl(
-      ActivityRepository activityRepository,
-      ProjectRepository projectRepository,
-      Function<ActivityEntity, Activity> mapper
-  ) {
-    this.activityRepository = activityRepository;
-    this.projectRepository = projectRepository;
-    this.mapper = mapper;
-  }
+    public ActivityServiceImpl(
+            ActivityRepository activityRepository,
+            ProjectRepository projectRepository
+    ) {
+        this.activityRepository = activityRepository;
+        this.projectRepository = projectRepository;
+        this.mapper = Mappers.getMapper(ActivityMapper.class);
+    }
 
-  @Override
-  public Activity create(String projectId, CreateActivityRequest request) {
-    ProjectEntity projectEntity = this.projectRepository.findById(projectId);
-    ActivityEntity entity = new ActivityEntity();
-    entity.setUUID(UUID.randomUUID().toString());
-    entity.setName(request.name());
-    entity.setDescription(request.description());
-    entity.setEstimation(request.estimation());
-    entity.setStartTime(request.startTime());
-    entity.setEndTime(request.endTime());
-    entity.setProject(projectEntity);
+    @Override
+    public Activity create(CreateActivityRequest request, String projectId) {
+//        ProjectEntity projectEntity = this.projectRepository.findById(projectId);
+//        entity.setProject(projectEntity);
 
-    ActivityEntity result = this.activityRepository.save(entity);
-    return mapper.apply(result);
-  }
+        ActivityEntity entity = new ActivityEntity();
+        entity.setUuid(UUID.randomUUID().toString());
+        entity.setName(request.name());
+        entity.setDescription(request.description());
+        entity.setEstimation(request.estimation());
+        entity.setStartTime(request.startTime());
+        entity.setEndTime(request.endTime());
 
-  @Override
-  public List<Activity> find() {
-    List<ActivityEntity> entities = activityRepository.findAll();
-    return entities.stream()
-        .map(mapper)
-        .toList();
-  }
+        ActivityEntity result = this.activityRepository.save(entity);
+        return mapper.toModel(result);
+    }
+
+    @Override
+    public List<Activity> find() {
+        List<ActivityEntity> entities = activityRepository.findAll();
+        return entities.stream()
+                .map(mapper::toModel)
+                .toList();
+    }
+
+    @Override
+    public Activity update(String activityId, UpdateActivityRequest request) {
+        ActivityEntity entity = this.activityRepository.findById(activityId);
+        if (entity == null) {
+            throw new RuntimeException("Activity not found");
+        }
+
+        // Merge request into entity
+        mapper.merge(request, entity);
+
+        return mapper.toModel(this.activityRepository.save(entity));
+    }
 }

@@ -25,13 +25,16 @@
 package com.ericafenyo.timemaster.activity;
 
 import com.ericafenyo.timemaster.activity.requests.CreateActivityRequest;
-import com.ericafenyo.timemaster.user.model.User;
-import com.ericafenyo.timemaster.user.requests.CreateUserRequest;
+import com.ericafenyo.timemaster.activity.requests.UpdateActivityRequest;
 
 import java.util.List;
 
 public interface ActivityService {
-  Activity create(String projectId, CreateActivityRequest request);
 
-  List<Activity> find();
+    Activity create(CreateActivityRequest request, String projectId);
+
+    Activity update(String activityId, UpdateActivityRequest request);
+
+    List<Activity> find();
+
 }

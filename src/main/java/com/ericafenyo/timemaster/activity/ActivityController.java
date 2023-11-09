@@ -24,8 +24,16 @@
 
 package com.ericafenyo.timemaster.activity;
 
+
 import com.ericafenyo.timemaster.activity.requests.CreateActivityRequest;
-import org.springframework.web.bind.annotation.*;
+import com.ericafenyo.timemaster.activity.requests.UpdateActivityRequest;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,22 +42,27 @@ import java.util.List;
 @RestController
 public class ActivityController {
 
-  private final ActivityService activityService;
+    private final ActivityService activityService;
 
-  public ActivityController(ActivityService activityService) {
-    this.activityService = activityService;
-  }
+    public ActivityController(ActivityService activityService) {
+        this.activityService = activityService;
+    }
 
-  @PostMapping("/activities")
-  public Activity createActivity(
-      @RequestBody CreateActivityRequest request,
-      @RequestParam("project_id") String projectId
-  ) {
-    return activityService.create(projectId, request);
-  }
+    @PostMapping("/activities")
+    public Activity createActivity(
+            @RequestBody CreateActivityRequest request,
+            @RequestParam(value = "project_id", required = false) String projectId
+    ) {
+        return activityService.create(request, projectId);
+    }
 
-  @GetMapping("/activities")
-  public List<Activity> getActivities() {
-    return activityService.find();
-  }
+    @GetMapping("/activities")
+    public List<Activity> getActivities() {
+        return activityService.find();
+    }
+
+    @PatchMapping("/activities/{activityId}")
+    public Activity updateActivity(@RequestBody UpdateActivityRequest request, @PathVariable String activityId) {
+        return activityService.update(activityId, request);
+    }
 }
