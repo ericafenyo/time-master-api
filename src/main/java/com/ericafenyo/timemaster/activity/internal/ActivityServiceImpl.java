@@ -79,6 +79,15 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public Activity findById(String activityId) {
+        ActivityEntity entity = this.activityRepository.findById(activityId);
+        if (entity == null) {
+            throw new RuntimeException("Activity not found");
+        }
+        return mapper.toModel(entity);
+    }
+
+    @Override
     public Activity update(String activityId, UpdateActivityRequest request) {
         ActivityEntity entity = this.activityRepository.findById(activityId);
         if (entity == null) {

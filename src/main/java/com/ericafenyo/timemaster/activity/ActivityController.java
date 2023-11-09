@@ -62,6 +62,11 @@ public class ActivityController {
         return activityService.find();
     }
 
+    @GetMapping("/activities/{activityId}")
+    public Activity getActivity(@PathVariable String activityId){
+        return activityService.findById(activityId);
+    }
+
     @PatchMapping("/activities/{activityId}")
     public Activity updateActivity(@RequestBody UpdateActivityRequest request, @PathVariable String activityId) {
         return activityService.update(activityId, request);

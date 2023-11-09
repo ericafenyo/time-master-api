@@ -39,4 +39,5 @@ public interface ActivityService {
 
     List<Activity> find();
 
+    Activity findById(String activityId);
 }
