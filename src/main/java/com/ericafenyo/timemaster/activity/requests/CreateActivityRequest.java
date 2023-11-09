@@ -32,11 +32,6 @@ import java.time.LocalDateTime;
  */
 public class CreateActivityRequest {
     /**
-     * UUID for the activity
-     */
-    private String uuid;
-
-    /**
      * Name of the activity (e.g., Task, Project)
      */
     private String name;
@@ -60,14 +55,6 @@ public class CreateActivityRequest {
      * End time when the activity is stopped or completed
      */
     private LocalDateTime endTime;
-
-    public String uuid() {
-        return uuid;
-    }
-
-    public void setUUID(String uuid) {
-        this.uuid = uuid;
-    }
 
     public String name() {
         return name;
