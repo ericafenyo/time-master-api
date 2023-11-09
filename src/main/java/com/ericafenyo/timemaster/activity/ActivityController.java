@@ -28,6 +28,7 @@ package com.ericafenyo.timemaster.activity;
 import com.ericafenyo.timemaster.activity.requests.CreateActivityRequest;
 import com.ericafenyo.timemaster.activity.requests.UpdateActivityRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,5 +65,10 @@ public class ActivityController {
     @PatchMapping("/activities/{activityId}")
     public Activity updateActivity(@RequestBody UpdateActivityRequest request, @PathVariable String activityId) {
         return activityService.update(activityId, request);
+    }
+
+    @DeleteMapping("/activities/{activityId}")
+    public void deleteActivity(@PathVariable String activityId) {
+        this.activityService.delete(activityId);
     }
 }

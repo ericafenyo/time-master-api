@@ -90,4 +90,14 @@ public class ActivityServiceImpl implements ActivityService {
 
         return mapper.toModel(this.activityRepository.save(entity));
     }
+
+    @Override
+    public void delete(String activityId) {
+        ActivityEntity entity = this.activityRepository.findById(activityId);
+        if (entity == null) {
+            return;
+        }
+
+        this.activityRepository.delete(entity);
+    }
 }

@@ -35,6 +35,8 @@ public interface ActivityService {
 
     Activity update(String activityId, UpdateActivityRequest request);
 
+    void delete(String activityId);
+
     List<Activity> find();
 
 }
